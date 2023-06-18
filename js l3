@@ -1,0 +1,7 @@
+function problem(value) {
+  if (typeof value === 'string') {
+    return "Error";
+  }
+  
+  return (value * 50) + 6;
+}
