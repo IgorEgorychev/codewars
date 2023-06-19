@@ -1,0 +1,9 @@
+function mango(quantity, price) {
+  let totalCost = 0;
+  let setsOfThree = Math.floor(quantity / 3);
+  let remainder = quantity % 3;
+
+  totalCost = (setsOfThree * 2 + remainder) * price;
+
+  return totalCost;
+}
