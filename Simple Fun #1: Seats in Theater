@@ -1,0 +1,6 @@
+function seatsInTheater(nCols, nRows, col, row) {
+  const peopleBehindInRow = nCols - col + 1;
+  const peopleAbove = nRows - row;
+  const totalPeople = peopleBehindInRow * peopleAbove;
+  return totalPeople;
+}
