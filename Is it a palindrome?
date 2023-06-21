@@ -1,0 +1,5 @@
+function isPalindrome(x) {
+  const alphanumericStr = x.replace(/[^a-zA-Z0-9]/g, '').toLowerCase();
+  const reversedStr = alphanumericStr.split('').reverse().join('');
+  return alphanumericStr === reversedStr;
+}
