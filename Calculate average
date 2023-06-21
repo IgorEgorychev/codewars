@@ -1,0 +1,9 @@
+function findAverage(array) {
+  if (array.length === 0) {
+    return 0;
+  }
+
+  const total = array.reduce((sum, num) => sum + num, 0);
+  const average = total / array.length;
+  return average;
+}
