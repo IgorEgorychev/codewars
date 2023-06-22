@@ -1,0 +1,7 @@
+function solve(compasses, gears, tablets) {
+  const distinctSets = Math.min(compasses, gears, tablets);
+  const step1Points = distinctSets * 7;
+  const step2Points = compasses ** 2 + gears ** 2 + tablets ** 2;
+  const totalScore = step1Points + step2Points;
+  return totalScore;
+}
