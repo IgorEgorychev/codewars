@@ -1,0 +1,11 @@
+function f(x, values) {
+  if (x === values.a) {
+    return values.b;
+  } else if (x === values.b) {
+    return values.c;
+  } else if (x === values.c) {
+    return values.a;
+  } else {
+    return null; // or any other value you prefer when x is not one of the expected values
+  }
+}
