@@ -1,0 +1,22 @@
+function validateBet(game, text) {
+  const [N, M] = game;
+  const numbers = text.split(/[,\s]+/).map(Number);
+  
+  if (numbers.length !== N) {
+    return null;
+  }
+  
+  const uniqueNumbers = [...new Set(numbers)];
+  
+  if (uniqueNumbers.length !== N) {
+    return null;
+  }
+  
+  const validNumbers = uniqueNumbers.filter(num => num >= 1 && num <= M);
+  
+  if (validNumbers.length !== N) {
+    return null;
+  }
+  
+  return validNumbers.sort((a, b) => a - b);
+}
