@@ -1,0 +1,8 @@
+SELECT film_id, title, special_features
+FROM film
+WHERE CARDINALITY(ARRAY(SELECT * FROM UNNEST(special_features) 
+                        WHERE UNNEST = ANY(ARRAY['Deleted Scenes', 'Behind the Scenes'])
+                       ) 
+                 ) = 1 
+      AND NOT ('Commentaries' = ANY(special_features))
+ORDER BY title, film_id
