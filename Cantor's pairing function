@@ -1,27 +1,5 @@
-function cantor(n) {
-  let row = 1;
-  let col = 1;
-  let direction = 1;
-
-  for (let i = 1; i < n; i++) {
-    if (direction === 1) {
-      if (row === 1) {
-        col++;
-        direction = -1;
-      } else {
-        row--;
-        col++;
-      }
-    } else {
-      if (col === 1) {
-        row++;
-        direction = 1;
-      } else {
-        row++;
-        col--;
-      }
-    }
-  }
-
-  return `${row}/${col}`;
-}
+select n, format(case m % 2 when 0 then '%1$s/%2$s' else '%2$s/%1$s' end, m - i, 1 + i) res
+from 
+	cantor a, 
+	cast(sqrt(2 * n) as int) m,
+	lateral(values ((m * (m + 1)) / 2 - n)) b(i)
