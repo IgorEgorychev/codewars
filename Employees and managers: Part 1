@@ -1,0 +1,7 @@
+select
+  manager_id,
+  array_agg(format('%s (%s)', name, id) order by id) employee_names
+from employees
+where manager_id is not NULL
+group by manager_id
+order by manager_id
