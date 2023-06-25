@@ -1,0 +1,8 @@
+ select date,sum(balance) over(order by date) as balance
+ from
+  (select date(date) as date,
+  sum(amount) as balance
+  from operations
+  group by date(date)
+   ) as t
+order by date
