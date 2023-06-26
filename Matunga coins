@@ -1,0 +1,37 @@
+function minPrice(arr) {
+  
+  const gcd = (a, b) => b ? gcd(b, a % b) : a;
+  const asc = (a, b) => a < b ? -1 : a > b ? 1 : 0;
+  const range = n => [...Array(n).keys()];
+  const r = arr.reduce(gcd, 0);
+  if (r != 1) return -1;
+  arr.sort(asc);
+  
+  const first = arr[0];
+  const last = arr.at(-1);
+  const path = range(first).fill(0);
+  const cost = range(first).fill(last * first);
+  path[0] = arr.length;
+  cost[0] = 0;
+  const q = [0];
+  const seen = new Set([0]);
+  
+  while (q.length) {
+    const n = q.pop();
+    seen.delete(n);
+    for (let i = 1; i < path[n]; i++) {
+      const p = (n + arr[i]) % first;
+      const m = cost[n] + arr[i];
+      if (m < cost[p]) {
+        cost[p] = m;
+        path[p] = i + 1;
+        if (!seen.has(p)) {
+          seen.add(p);
+          q.unshift(p);
+        }
+      }
+    }
+  }
+  
+  return Math.max(1, 1 + Math.max(...cost) - first);
+}
