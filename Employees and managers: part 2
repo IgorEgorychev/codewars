@@ -1,0 +1,8 @@
+WITH RECURSIVE r(id, name, manager_id, management_chain) AS (
+    SELECT e.*, ARRAY[] :: TEXT[] AS management_chain FROM employees e WHERE e.manager_id IS NULL
+    UNION ALL
+    SELECT e.*, ARRAY_APPEND(r.management_chain, CONCAT(r.name, ' (', r.id, ')')) AS management_chain
+    FROM employees e JOIN r ON r.id = e.manager_id
+)
+SELECT id, name, ARRAY_TO_STRING(management_chain, ' -> ') AS management_chain
+FROM r ORDER BY id;
