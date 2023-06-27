@@ -1,0 +1,16 @@
+function toIndustrial(time){
+  if (typeof time === "number") {
+    return +String((time / 60).toFixed(2))
+  }
+  if (typeof time  === "string") {
+    const timeArr = time.split(':')
+    const timeMins = timeArr[0] * 60 + +timeArr[1]
+    return toIndustrial(timeMins)
+  }
+}
+
+function toNormal(time){
+  const timeArr = String(time.toFixed(2)).split('.')
+  timeArr[1] = String(Math.round((timeArr[1] /100) * 60)).padStart(2, '0');
+  return timeArr.join(':') 
+}
