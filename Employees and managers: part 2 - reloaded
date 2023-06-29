@@ -1,0 +1,17 @@
+create extension tablefunc;
+with t as (
+  select eid, regexp_split_to_table(path, '~')::int as mid
+  from
+    (select id from employees where manager_id is null) as roots,
+    lateral connectby('employees', 'id', 'manager_id', id::text, 0, '~')
+      as e(eid int, mid0 int, lvl int, path text)
+)
+select
+  eid as id,
+  e.name,
+  coalesce(
+    string_agg(m.name || ' (' || m.id || ')', ' -> ') filter (where mid <> eid)
+  , '') as management_chain
+from t join employees e on eid = e.id join employees m on mid = m.id
+group by eid, e.name
+order by id
