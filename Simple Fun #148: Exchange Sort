@@ -1,0 +1,8 @@
+function exchangeSort(arr) {
+  let L = 0, G = 0, R = [...arr].sort()
+  for(let i = 0; i < R.length; i++) {
+      if (R[i]<arr[i]) L++
+      else if (R[i]>arr[i]) G++
+  }
+  return Math.max(L,G)
+}
