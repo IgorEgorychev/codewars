@@ -1,0 +1,26 @@
+const nCk = {};
+
+function comb(n, k) {
+  const i = n + "," + k;
+  if (i in nCk) return nCk[i];
+  let m = 1;
+  for (let x = n - k + 1; x <= n; x++) m *= x;
+  for (let x = 1; x <= k; x++) m /= x;
+  nCk[i] = m;
+  return m;
+}
+
+function multiply(n, k, p = 2, m = 1) {
+  if (n == 1 || k == 1) return 1;
+  while (p * p <= n) {
+    let q = 0;
+    while (n % p == 0) {
+      n /= p;
+      q++;
+    }
+    m *= comb(q + k - 1, k - 1);
+    p++;
+  }
+  if (n == 1) return m;
+  return m * k;
+}
