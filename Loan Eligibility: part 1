@@ -1,0 +1,7 @@
+select customers.id customer_id,
+format('loan can%s be given', (Array['not', ''])[1+(age > 17 and age< 65 and count(loans.id) = 0)::int]) loan_eligibility
+from customers
+left join loans on customer_id = customers.id and loan_status = 'unpaid'
+where customers.id < 11
+group by customers.id
+order by customer_id desc
