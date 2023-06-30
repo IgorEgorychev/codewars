@@ -1,0 +1,5 @@
+function insaneIncOrDec(maxDigits) {
+  let n = 1n;
+  for (let i = 1n; i <= 9n; i++) n = n * (maxDigits + i) / i;
+  return (n * (20n + maxDigits) / 10n - 10n * maxDigits - 2n) % 12345787n;
+}
