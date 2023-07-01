@@ -1,0 +1,129 @@
+var m = {};
+
+var width = 0;
+var size = 0;
+var count = 0;
+var pairs = [];
+
+function getValue(i) {
+  var left = 0, right = count - 1;
+  
+  while (left < right) {
+    let mid = Math.floor((left + right) / 2);
+    if      (i < pairs[mid][2])     right = mid - 1;
+    else if (i > pairs[mid+1][2])   left = mid + 1;
+    else if (i === pairs[mid+1][2]) return pairs[mid+1][0];
+    else                            return pairs[mid][0];
+  }
+  
+  return pairs[right][0];
+}
+
+function setValue(i) {
+  if (m[i] > 0) return;
+  let col = i % width, ret = 0;
+  if (i >= width) {
+    ret = Math.max(ret, Math.abs(getValue(i) - getValue(i - width)));
+    if (col > 0) {
+      ret = Math.max(ret, Math.abs(getValue(i) - getValue(i - width - 1)));
+    }
+    if (col < width - 1) {
+      ret = Math.max(ret, Math.abs(getValue(i) - getValue(i - width + 1)));
+    }
+  }
+  if (i < size - width) {
+    ret = Math.max(ret, Math.abs(getValue(i) - getValue(i + width)));
+    if (col > 0) {
+      ret = Math.max(ret, Math.abs(getValue(i) - getValue(i + width - 1)));
+    }
+    if (col < width - 1) {
+      ret = Math.max(ret, Math.abs(getValue(i) - getValue(i + width + 1)));
+    }
+  }
+  if (col > 0) {
+    ret = Math.max(ret, Math.abs(getValue(i) - getValue(i - 1)));
+  }
+  if (col < width - 1) {
+    ret = Math.max(ret, Math.abs(getValue(i) - getValue(i + 1)));
+  }
+  m[i] = ret;
+}
+
+function dealAround(i) {
+  setValue(i);
+  let col = i % width;
+  if (i >= width) {
+    setValue(i - width);
+    if (col > 0) {
+      setValue(i - width - 1);
+    }
+    if (col < width - 1) {
+      setValue(i - width + 1);
+    }
+  }
+  if (i < size - width) {
+    setValue(i + width);
+    if (col > 0) {
+      setValue(i + width - 1);
+    }
+    if (col < width - 1) {
+      setValue(i + width + 1);
+    }
+  }
+  if (col > 0) {
+    setValue(i - 1);
+  }
+  if (col < width - 1) {
+    setValue(i + 1);
+  }
+}
+
+function edgeDetection(image){
+  m = {};
+  pairs = [];
+  let res = [];
+  size = 0;
+  let data = image.split(' ').map(s => Number(s));
+  width = data[0];
+  for (let i = 1; i < data.length; i += 2) {
+    pairs.push([data[i], data[i+1], size]);
+    size += data[i + 1];
+  }
+  pairs.push([0, 0, size]);
+  
+  count = pairs.length - 1;
+  let i = 0, controlVal;
+  while (i < count) {
+    let curPos = pairs[i][2];
+    let row = Math.floor(curPos / width), col = curPos % width;
+    
+    dealAround(curPos);
+    
+    if (col > 1) dealAround(Math.floor((curPos - 1) / width) * width);
+    
+    controlVal = (row + 1) * width;
+    if (controlVal < pairs[i + 1][2] - 1) dealAround(controlVal);
+    i++;
+  }
+  
+  controlVal = (pairs[count - 1][2] + 1) * width;
+  if (controlVal < size) dealAround(controlVal);
+  
+  let items = Object.keys(m).map(function(key) {
+    return [key, m[key]];
+  });
+  items.sort(function(first, second) {
+    return first[0] - second[0];
+  });
+  i = 0;
+  let start = 0, value = items[i][1], result = `${width}`;
+  while (true) {
+    while (value === items[i][1]) {
+      i++;
+      if (i === items.length) return result + ` ${value} ${size - start}`;
+    }
+    result += ` ${value} ${items[i][0] - start}`;
+    start = items[i][0], value = items[i][1];
+  }
+  return result;
+}
