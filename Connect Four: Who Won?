@@ -1,0 +1,35 @@
+function connectFour(board) {
+  var i, j, k, line, res = !/-/.test([].concat.apply([],board).join('')) ? 'draw' : 'in progress';
+  function checkWin(line) {
+    if (/R{4}/.test(line)) res = 'R';
+    if (/Y{4}/.test(line)) res = 'Y';
+  }
+  // rows
+  board.forEach(function(row) { checkWin(row.join('')); });
+  // columns
+  for (j=0;j<7;j++) {
+    line = '';
+    for (i=0; i<6; i++) {
+      line += board[i][j];
+    }
+    checkWin(line);
+  }
+  // diagonals
+  for (i=0; i<3; i++) {
+    for (j=0; j<4; j++) {
+      line = '';
+      for (k=0; i+k < 6 && j+k <7; k++) {
+        line += board[i+k][j+k];
+      }
+      checkWin(line);
+    }
+    for (j=6; j>2; j--) {
+      line = '';
+      for (k=0; i+k < 6 && j-k >=0; k++) {
+        line += board[i+k][j-k];
+      }
+      checkWin(line);
+    }
+  }
+  return res;
+}
