@@ -1,0 +1,39 @@
+function knights_tour(start, size) {
+  
+  const dfsTravel=(x,y)=>{
+    
+    const cnds = neighs(x,y).map( ([i,j])=>[Warnsdorf[i][j],i,j] ).sort((a,b)=>a[0]-b[0])
+    
+    for(let [nNeighs,i,j] of cnds){
+      if(nNeighs===Infinity) continue
+      
+      const subs = neighs(i,j)
+      for(let [a,b] of subs) Warnsdorf[a][b]--
+      Warnsdorf[i][j] = Infinity
+      path.push([i,j])
+      todo--
+      
+      dfsTravel(i,j)
+      if(!todo) return path
+      
+      todo++
+      path.pop()
+      Warnsdorf[i][j] = nNeighs
+      for(let [a,b] of subs) Warnsdorf[a][b]++
+    }
+  }
+  
+  const NEIGHS = [[2,1], [-2,1], [2,-1], [-2,-1], [1,2], [-1,2], [1,-2], [-1,-2]]
+  
+  const isInside          = (i,j) => i>=0 && i<size && j>=0 && j<size
+  const neighs            = (x,y) => NEIGHS.map( ([i,j]) => [i+x,j+y] ).filter( ([i,j]) => isInside(i,j) )
+  const nInitialNeighbors = (i,j) => 1<i && i<size-2 && 1<j && j<size-2 ? 8 : neighs(i,j).length
+  
+  const Warnsdorf = [...Array(size)].map((_,i,a)=>a.map((_,j)=>nInitialNeighbors(i,j)))
+  Warnsdorf[start[0]][start[1]] = Infinity
+  
+  const path = [start]
+  let   todo = size*size - 1
+  
+  return dfsTravel(...start)
+}
