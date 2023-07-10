@@ -1,0 +1,24 @@
+function solve(config) {
+  
+  const getAngles=(a,b,c)=> [[b,c,a], [-b,-c,-a], [c,a,b], [-c,-a,-b]];
+  
+  const dfs=(pos,d,i)=>{
+    let [x,y,z] = pos
+    out.push(pos)
+    cube[x][y][z]++
+    
+    if(out.length==27) return true
+    
+    const toCheck = !config[i] ? [d] : getAngles(...d)
+    for(let dd of toCheck){
+      const neigh = pos.map((c,j)=>c+dd[j]), [x,y,z] = neigh
+      if(neigh.every(c=>0<=c&&c<3) && !cube[x][y][z] && dfs(neigh, dd, i+1))
+        return true
+    }
+    cube[x][y][z]--
+    out.pop()
+  }
+  
+  const out=[], tmp=[0,0,0], cube=tmp.map(_=>tmp.map(_=>tmp.slice()));
+  return dfs([0,0,0], [0,0,1], 0) ? out : null;
+}
