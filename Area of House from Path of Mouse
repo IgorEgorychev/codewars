@@ -1,0 +1,53 @@
+function mousePath(s){
+  let x=0;
+  let y=0;
+  let vx=1;
+  let vy=0;
+  let area=0;
+  let areaHelper=0;
+  const rects=[];
+  function sort(a,b){
+    return a<b?[a,b]:[b,a];
+  }
+  try{
+    for(const instr of s.match(/\d+|[RL]/g)){
+      if(instr==="R"){
+        const vx_=vx;
+        vx=vy;
+        vy=-vx_;
+      }else if(instr==="L"){
+        const vx_=vx;
+        vx=-vy;
+        vy=vx_;
+      }else{
+        const steps=Number(instr);
+        rects.push({x:sort(x,x+(steps-1)*vx),y:sort(y,y+(steps-1)*vy)});
+        x+=steps*vx;
+        y+=steps*vy;
+        console.log(x,y);
+        areaHelper+=steps*vx;
+        area+=steps*vy*areaHelper;
+      }
+    }
+    if(x||y||vx)
+      return null;
+    function conflict([min1,max1],[min2,max2]){
+      return max1-min2>=-0.5&&max2-min1>=-0.5;
+    }
+    const q={"x":[126,126],"y":[-240,-2594]};
+    const w={"x":[1,1053],"y":[-1440,-1440]};
+    for(let i=0;i<rects.length;i++){
+      const {x:x1,y:y1}=rects[i];
+      for(let j=0;j<i;j++){
+        const {x:x2,y:y2}=rects[j];
+        if(conflict(x1,x2)&&conflict(y1,y2))
+          return null;
+      }
+    }
+    return Math.abs(area);
+  }catch(e){
+    if(e.message==="invalid")
+      return null;
+    throw e;
+  }
+}
