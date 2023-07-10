@@ -1,0 +1,29 @@
+function solve(N){
+  var s=0n,a1=1n,d=1n,n=9n;
+  while(N>s){
+    var an=a1+d*(n-1n),      
+    s1=(a1+an)*n/2n;
+    if(s+s1>=N)break
+    s+=s1;a1=++d+an;n*=10n;  
+  }
+  N-=s;
+  var k=n;
+  while(k>=1n){
+    k/=2n;
+    s=(2n*a1+d*(n-1n))*n/2n;
+    s<N?n+=k:n-=k;
+  }
+  while(s<N){s=(2n*a1+d*(++n-1n))*n/2n}
+  while(s>=N){s=(2n*a1+d*(--n-1n))*n/2n}
+  N-=s;d=1n;n=9n;s=0n;
+  while(s<N){
+    s1=d*n;
+    if(s+s1>=N)break
+    s+=s1;
+    d++;n*=10n;
+  }
+  N-=s;N=Number(N);d=Number(d);
+  var r=N%d,
+      y=Math.ceil(N/d)+Math.pow(10,d-1)-1+'';
+  return +y[r?r-1:y.length-1]
+}
