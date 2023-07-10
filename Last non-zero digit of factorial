@@ -1,0 +1,13 @@
+let precomputedFactorialTails = [1, 1, 2, 6, 4, 2, 2, 4, 2, 8];
+
+function lastDigit(n)
+{
+    if (n < 10)
+        return precomputedFactorialTails[n];
+    if ((parseInt(n / 10, 10) % 10) % 2 == 0)
+     return (6 * lastDigit(parseInt(n / 5, 10))
+        * precomputedFactorialTails[n % 10]) % 10;
+    else
+     return (4 * lastDigit(parseInt(n / 5, 10))
+        * precomputedFactorialTails[n % 10]) % 10;
+}
