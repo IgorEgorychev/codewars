@@ -1,0 +1,20 @@
+function getScore(dice){ 
+  var dc = [0,0,0,0,0,0];
+  var tdr = [1000,200,300,400,500,600];
+  var sdr = [100,0,0,0,50,0];
+  var pair = 0;
+  dice.forEach(function(x){
+    dc[x-1]++;
+    if(dc[x-1]===2){
+      pair++;
+    }
+  });
+  
+  if(dc.every(function(x){ return x===1; })) { return 1000; }
+  if(pair===3) return 750;
+  var score =  dc.reduce(function(s,x,i){ 
+    return s + (x >= 3? tdr[i]*(x-2) : sdr[i]*(x % 3));
+  },0);
+
+  return score?score:"Zonk";
+}
