@@ -1,0 +1,13 @@
+function f(d) {
+  const primes = [2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61, 67, 71, 73, 79, 83, 89, 97];
+  let m = 0n;
+  const go = (d, n, i, P) => {
+    if (d == 1 && (m == 0 || n < m)) { m = n; return; }
+    for (let p = 2; p <= P + 1; p++) {
+      n *= BigInt(primes[i]);
+      if (d % p == 0) go(Math.floor(d / p), n, i + 1, p + 1);
+    }
+  }
+  go(d, 1n, 0, 10000);
+  return m;
+}
