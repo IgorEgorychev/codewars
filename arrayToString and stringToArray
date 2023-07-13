@@ -1,0 +1,22 @@
+function arrayToString(a) {
+    return a.reduce((r,v,d,x) => {
+        if (!(x = r[r.length-1])) return [{v,n:1}];
+        d = x.p==null ? v-x.v : v-x.p, x.d==null && (x.d = d);
+        d==null || d==x.d ? (++x.n, x.p = v) : r.push({v,n:1});
+        return r;
+    },[]).reduceRight((r,x,i,a) => {
+        if ((i=a[i-1]) && x.n==2 && i.p+x.d==x.v) x.v = i.p, ++x.n, i.p -= i.d, --i.n;
+        return r.unshift(x), r;
+    },[]).reduce((s,{v,p,n,d}) => (s && s+',')+v+(
+        n<2 ? '' : n<3 ? ','+p : ':'+n+(0<d ? '+' : '')+(d || '')
+    ),'');
+}
+
+function stringToArray(s) {
+    if (!s) return []; else var r = /^(-?\d+)(?::(\d+)(.*))?$/;
+    return s.split(',').reduce((a,s) => {
+        a.push((s = r.exec(s).slice(1).map(Number))[0]);
+        if (s[1]) while (--s[1]) a.push(s[0] += s[2]|0);
+        return a;
+    },[]);
+}
