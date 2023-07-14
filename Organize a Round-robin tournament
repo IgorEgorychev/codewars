@@ -1,0 +1,13 @@
+function buildMatchesTable(nTeams) {
+  let rnds = [];
+  let half = (nTeams>>1)-1;
+  let n    = nTeams-1;
+  for(let i=0; i<n ; i++){
+      let r=[[i+1,nTeams]];
+      rnds.push(r);
+      for(let d=1 ; d<=half ; d++){
+          r.push([(i+d)%n+1,(i-d+n)%n+1]);
+      }
+  }
+  return rnds;
+}
